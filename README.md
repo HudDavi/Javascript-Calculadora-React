@@ -1,5 +1,4 @@
-<h1>Calculadora feita em HTML, CSS, Javascript e React</h1>
-<hr>
+<h2>Calculadora feita em HTML, CSS, Javascript e React</h2>
 <h3>Habilidades:</h3>
 <div display="inline-block">
 <img height="30px" width="10%" src="https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white">
