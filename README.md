@@ -1,9 +1,8 @@
-<h2>Calculadora feita em HTML, CSS, Javascript e React</h2>
+<h2>Calculadora feita em HTML, CSS e React</h2>
 <h3>Habilidades:</h3>
 <div display="inline-block">
 <img height="30px" width="10%" src="https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white">
 <img height="30px" width="10%" src="https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white">
-<img height="30px" width="10%" src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E">
 <img height="30px" width="10%" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
 </div>
 <hr>
