@@ -9,7 +9,6 @@
 
 html,
 body{
-    height: 100%;
     width: 100%;
 }
 
@@ -31,18 +30,14 @@ body{
     margin: 5% auto 0 auto;
 }
 
-.formulario-label{
-    color: #fff;
-}
-
 .formulario-resultado,
 .formulario-operacao{
     background: #fff;
     border: 1px solid #000;
     font-size: 20px;
     font-weight: bold;
-    height: 50px;
-    width: 100%;
+    min-height: 50px;
+    min-width: 100%;
     padding-left: 10px;
     margin-bottom: 10px;
 }

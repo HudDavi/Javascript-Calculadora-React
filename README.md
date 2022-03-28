@@ -16,10 +16,8 @@
 <p>git clone https://github.com/HudDavi/Javascript-Calculadora-React.git</p>
 <li>Acesse a pasta do projeto:</li>
 <p>cd Javascript-Calculadora-React</p>
-<li>Em seguida instale o React:</li>
-<p>npm install react react-dom</p>
-<li>Acesse a pasta src:</li>
-<p>cd src</p>
+<li>Em seguida instale o react, react-dom, react-scripts e web-vitals:</li>
+<p>npm install react react-dom react-scripts web-vitals</p>
 <li>Execute a aplicação:</li>
 <p>npm start</p>
 <li>Acesse a aplicação no seu navegador:</li>
