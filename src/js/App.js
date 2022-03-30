@@ -177,9 +177,7 @@ class App extends React.Component{
             this.setState({parentese: [0]});
         }
         else{
-            let operacao =this.state.operacao;
-            operacao.pop();
-            this.setState({operacao: operacao});
+            this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
         }
     };
     // Parenteses Para Informar a Ordem de Preferência das Operações
