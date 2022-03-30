@@ -18,7 +18,6 @@ class App extends React.Component{
             parenteses: false,
             parentese: [0],// Verificador de parentese (0 =  não informado, 1 = adicionado abrir parentese, 2 = adicionado fechar parentese)
         };
-        this.calculos = [];
     }
     // Cálculos Matemáticos Executados Pela Calculadora
     calcular = () => {
@@ -176,9 +175,11 @@ class App extends React.Component{
             this.setState({ponto: [0,0]});
             this.setState({parenteses: false});
             this.setState({parentese: [0]});
-            this.calculos = [];
         }
         else{
+            let operacao =this.state.operacao;
+            operacao.pop();
+            this.setState({operacao: operacao});
         }
     };
     // Parenteses Para Informar a Ordem de Preferência das Operações
@@ -254,7 +255,7 @@ class App extends React.Component{
                 let valor = this.state.valor;
                 valor[valor.length - 2] = valor[valor.length - 2] + e.target.value;
                 this.setState({valor: valor});
-                if(this.calculos.length && (this.calculos[this.calculos.length - 1] !== '+') && (this.calculos[this.calculos.length - 1] !== '-') && (this.calculos[this.calculos.length - 1] !== '*') && (this.calculos[this.calculos.length - 1] !== '/') && (this.calculos[this.calculos.length - 1] !== '(') && (this.calculos[this.calculos.length - 1] !== ')')){
+                if(this.state.calculos.length && (this.state.calculos[this.state.calculos.length - 1] !== '+') && (this.state.calculos[this.state.calculos.length - 1] !== '-') && (this.state.calculos[this.state.calculos.length - 1] !== '*') && (this.state.calculos[this.state.calculos.length - 1] !== '/') && (this.state.calculos[this.state.calculos.length - 1] !== '(') && (this.state.calculos[this.state.calculos.length - 1] !== ')')){
                     if(this.state.ponto){
                         let calculos = this.state.calculos;
                         calculos[calculos.length - 1] = parseFloat(valor[valor.length - 2]);
@@ -300,7 +301,7 @@ class App extends React.Component{
                 let valor = this.state.valor;
                 valor[valor.length - 1] = valor[valor.length - 1] + e.target.value;
                 this.setState({valor: valor});
-                if(this.calculos.length && (this.calculos[this.calculos.length - 1] !== '+') && (this.calculos[this.calculos.length - 1] !== '-') && (this.calculos[this.calculos.length - 1] !== '*') && (this.calculos[this.calculos.length - 1] !== '/') && (this.calculos[this.calculos.length - 1] !== '(') && (this.calculos[this.calculos.length - 1] !== ')')){
+                if(this.state.calculos.length && (this.state.calculos[this.state.calculos.length - 1] !== '+') && (this.state.calculos[this.state.calculos.length - 1] !== '-') && (this.state.calculos[this.state.calculos.length - 1] !== '*') && (this.state.calculos[this.state.calculos.length - 1] !== '/') && (this.state.calculos[this.state.calculos.length - 1] !== '(') && (this.state.calculos[this.state.calculos.length - 1] !== ')')){
                     if(this.state.ponto){
                         let calculos = this.state.calculos;
                         calculos[calculos.length - 1] = parseFloat(valor[valor.length - 1]);
@@ -464,7 +465,6 @@ class App extends React.Component{
             this.setState({ponto: [0,0]});
             this.setState({parenteses: false});
             this.setState({parentese: [0]});
-            this.calculos = [];
         }
     };
     // Operadores Matemáticas Solicitados
