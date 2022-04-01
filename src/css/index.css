@@ -69,6 +69,10 @@ body{
     width: 25%;
 }
 
+.formulario-button:last-child{
+    width: 100%;
+}
+
 .formulario-button:hover{
     background: -webkit-linear-gradient(#fff, #ccc);
     background:    -moz-linear-gradient(#fff, #ccc);

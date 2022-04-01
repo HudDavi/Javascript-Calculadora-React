@@ -1,117 +1,73 @@
 import React from 'react';
 
 class App extends React.Component{
+    // Construtor
     constructor(props){
         super(props);
         this.state = {
-            valor: ['',''],// Vetor de strings que vai armazenar os valores ('' = não informado).
-            resultado: '',// String que vai armazenar o resultado de cada cálculo ('' = não informado).
-            operacao: '',// String que vai armazenar a sequência de operações solicitadas ('' = não informado).
-            calculos: [],// Vetor que vai armazenar a sequência de cálculos.
-            somar: [false],// Vetor que vai armazenar a sequência de operações de soma (false = não solicitado, true = solicitado).
-            subtrair: [false],// Vetor que vai armazenar a sequência de operações de subtração (false = não solicitado, true = solicitado).
-            multiplicar: [false],// Vetor que vai armazenar a sequência de operações de multiplicação (false = não solicitado, true = solicitado).
-            dividir: [false],// Vetor que vai armazenar a sequência de operações de divisão (false = não solicitado, true = solicitado).
-            pontos: false,// Informa se existe ponto decimal (false = não solicitado, true = solicitado).
-            ponto: [0,0],// Vetor que vai armazenar o estado dos pontos decimais de cada valor inserido (0 =  não informado, 1 = adicionado sem número a direita dele, 2 = adicionado com número a direita dele).
-            parenteses: false,// Informa se existe algum parêntese (false = não solicitado, true = solicitado).
-            parentese: [0],// Vetor que vai armazenar o estado de cada parêntese inserido (0 =  não informado, 1 = adicionado abrir parêntese, 2 = adicionado fechar parêntese).
+            valor: ['',''],// String que vai armazenar os valores de A ('' = não informado)
+            resultado: '',// String que vai armazenar o resultado de cada cálculo ('' = não informado)
+            operacao: '',// String que vai armazenar a sequência de operações solicitadas ('' = não informado)
+            calculos: [],
+            somar: [false],// Verificador de operação de soma (false = não solicitado, true = solicitado)
+            subtrair: [false],// Verificador de operação de subtração (false = não solicitado, true = solicitado)
+            multiplicar: [false],// Verificador de operação de multiplicação (false = não solicitado, true = solicitado)
+            dividir: [false],// Verificador de operação de divisão (false = não solicitado, true = solicitado)
+            pontos: false,// Verificador de this.state.ponto decimal (false = não solicitado, true = solicitado)
+            ponto: [0,0],// Verificador de this.state.ponto decimal dos valores de A (0 =  não informado, 1 = adicionado sem número a direita dele, 2 = adicionado com número a direita dele)
+            parenteses: false,
+            parentese: [0],// Verificador de parentese (0 =  não informado, 1 = adicionado abrir parentese, 2 = adicionado fechar parentese)
         };
     }
-    // Cálculos Matemáticos Executados Pela Calculadora.
+    // Cálculos Matemáticos Executados Pela Calculadora
     calcular = () => {
-        // Cria uma variável local e passa a sequência de cálculos solicitados.
         let operacoes = [];
         this.state.calculos.forEach(item => {
             operacoes.push(item);
         });
-        // Verifica se um determinado valor é numérico.
         const numero = (numero) => {
             return !isNaN(parseFloat(numero)) && isFinite(numero);
         };
-        let valores = [];// Vetor que vai receber a sequência de valores numéricos.
-        let operadores = [];// Vetor que vai receber a sequência de operadores matemáticos.
-        let preferencia = [];// Vetor que vai receber a sequência de ordem de preferência das operações.
-        let resultado = '';// Variável que vai receber o resultado dos cálculos.
-        // Executa até que toda a sequência de operações tenha terminado.
+        let valores = [];
+        let operadores = [];
+        let preferencia = [];
+        let resultado = '';
         while(operacoes.length){
             if(numero(operacoes[0])){
-                /*
-                 * Se o valor for numério,
-                 * atribui o valor ao vetor de valores e remove ele do vetor de operacões.
-                 */
                 valores.push(operacoes.shift());
             }
             else if((operacoes[0] === '+') || (operacoes[0] === '-')){
-                /*
-                 * Se o valor for soma ou subtração,
-                 * atribui o valor ao vetor de operadores,
-                 * remove ele do vetor de operacões e atribui o valor 1 ao vetor de preferência.
-                 */
                 operadores.push(operacoes.shift());
                 preferencia.push(1);
             }
             else if((operacoes[0] === '*') || (operacoes[0] === '/')){
-                /*
-                 * Se o valor for multiplicação ou divisão,
-                 * atribui o valor ao vetor de operadores,
-                 * remove ele do vetor de operacões e atribui o valor 2 ao vetor de preferência.
-                 */
                 operadores.push(operacoes.shift());
                 preferencia.push(2);
             }
             else if(operacoes[0] === '('){
-                /*
-                 * Se o valor for abrir parêntese,
-                 * executa até que toda a sequência de operações entre parênteses tenha terminado.
-                 */
                 while(operacoes.length){
                     if(numero(operacoes[0])){
-                        /*
-                         * Se o valor for numério,
-                         * atribui o valor ao vetor de valores e remove ele do vetor de operacões.
-                         */
                         valores.push(operacoes.shift());
                     }
                     else if((operacoes[0] === '+') || (operacoes[0] === '-')){
-                        /*
-                         * Se o valor for soma ou subtração,
-                         * atribui o valor ao vetor de operadores,
-                         * remove ele do vetor de operacões e atribui o valor 3 ao vetor de preferência.
-                         */
                         operadores.push(operacoes.shift());
                         preferencia.push(3);
                     }
                     else if((operacoes[0] === '*') || (operacoes[0] === '/')){
-                        /*
-                         * Se o valor for multiplicação ou divisão,
-                         * atribui o valor ao vetor de operadores,
-                         * remove ele do vetor de operacões e atribui o valor 4 ao vetor de preferência.
-                         */
                         operadores.push(operacoes.shift());
                         preferencia.push(4);
                     }
                     else if(operacoes[0] === '('){
-                        /*
-                         * Se o valor for abrir parêntese,
-                         * remove ele do vetor de operacões.
-                         */
                         operacoes.shift();
                     }
                     else if(operacoes[0] === ')'){
-                        /*
-                         * Se o valor for fechar parêntese,
-                         * remove ele do vetor de operacões e encerra a execução do loop.
-                         */
                         operacoes.shift();
                         break;
                     }
                 }
             }
         }
-        // Executa até que toda a sequência de valores tenha terminado.
         while(valores.length){
-            // Cria duas variáveis locais e passa o valor e a posição do operador com maior preferência no cálculo.
             let valor = 0;
             let posicao = 0;
             preferencia.forEach((item, local) => {
@@ -121,45 +77,18 @@ class App extends React.Component{
                 }
             });
             if(operadores[posicao] === '*'){
-                /*
-                 * Se o valor for multiplicação,
-                 * verifica se existe valor numérico imediatamente a direita do operador.
-                 */
                 if(valores[posicao + 1] !== undefined){
-                    /*
-                     * Se existir executa o cálculo de múltiplicação entre os valores numéricos:
-                     * imediatamente a esquerda do operador e imediatamente a direita do operador.
-                     * remove os dois valores numéricos,
-                     * remove o operador de multiplicação,
-                     * remove a preferência do operador de multiplicação.
-                     */
                     resultado = valores[posicao] * valores[posicao + 1];
                     valores.splice(posicao, 2, resultado);
                     operadores.splice(posicao, 1);
                     preferencia.splice(posicao, 1);
                 }
                 else{
-                    /*
-                    * Se não existir valor numérico imediatamente a direita do operador,
-                    * verifica se o número de valores numéricos é maior que 1.
-                    */
                     if(valores.length > 1){
-                        /*
-                        * Se o número de valores numéricos for maior que 1,
-                        * remove o último operador,
-                        * remove a preferência do último operador.
-                        */
                         operadores.pop();
                         preferencia.pop();
                     }
                     else{
-                        /*
-                        * Se o número de valores numéricos for igual a 1,
-                        * atribui o valor numérico ao resultado,
-                        * reseta o vetor de valores,
-                        * remove o último operador,
-                        * remove a preferência do último operador.
-                        */
                         resultado = valores[posicao];
                         valores = [];
                         operadores.pop();
@@ -168,45 +97,18 @@ class App extends React.Component{
                 }
             }
             else if(operadores[posicao] === '/'){
-                /*
-                 * Se o valor for divisão,
-                 * verifica se existe valor numérico imediatamente a direita do operador.
-                 */
                 if(valores[posicao + 1] !== undefined){
-                    /*
-                     * Se existir executa o cálculo de divisão entre os valores numéricos:
-                     * imediatamente a esquerda do operador e imediatamente a direita do operador.
-                     * remove os dois valores numéricos,
-                     * remove o operador de divisão,
-                     * remove a preferência do operador de divisão.
-                     */
                     resultado = valores[posicao] / valores[posicao + 1];
                     valores.splice(posicao, 2, resultado);
                     operadores.splice(posicao, 1);
                     preferencia.splice(posicao, 1);
                 }
                 else{
-                    /*
-                    * Se não existir valor numérico imediatamente a direita do operador,
-                    * verifica se o número de valores numéricos é maior que 1.
-                    */
                     if(valores.length > 1){
-                        /*
-                        * Se o número de valores numéricos for maior que 1,
-                        * remove o último operador,
-                        * remove a preferência do último operador.
-                        */
                         operadores.pop();
                         preferencia.pop();
                     }
                     else{
-                        /*
-                        * Se o número de valores numéricos for igual a 1,
-                        * atribui o valor numérico ao resultado,
-                        * reseta o vetor de valores,
-                        * remove o último operador,
-                        * remove a preferência do último operador.
-                        */
                         resultado = valores[posicao];
                         valores = [];
                         operadores.pop();
@@ -215,45 +117,18 @@ class App extends React.Component{
                 }
             }
             else if(operadores[posicao] === '+'){
-                /*
-                 * Se o valor for soma,
-                 * verifica se existe valor numérico imediatamente a direita do operador.
-                 */
                 if(valores[posicao + 1] !== undefined){
-                    /*
-                     * Se existir executa o cálculo de soma entre os valores numéricos:
-                     * imediatamente a esquerda do operador e imediatamente a direita do operador.
-                     * remove os dois valores numéricos,
-                     * remove o operador de soma,
-                     * remove a preferência do operador de soma.
-                     */
                     resultado = valores[posicao] + valores[posicao + 1];
                     valores.splice(posicao, 2, resultado);
                     operadores.splice(posicao, 1);
                     preferencia.splice(posicao, 1);
                 }
                 else{
-                    /*
-                    * Se não existir valor numérico imediatamente a direita do operador,
-                    * verifica se o número de valores numéricos é maior que 1.
-                    */
                     if(valores.length > 1){
-                        /*
-                        * Se o número de valores numéricos for maior que 1,
-                        * remove o último operador,
-                        * remove a preferência do último operador.
-                        */
                         operadores.pop();
                         preferencia.pop();
                     }
                     else{
-                        /*
-                        * Se o número de valores numéricos for igual a 1,
-                        * atribui o valor numérico ao resultado,
-                        * reseta o vetor de valores,
-                        * remove o último operador,
-                        * remove a preferência do último operador.
-                        */
                         resultado = valores[posicao];
                         valores = [];
                         operadores.pop();
@@ -262,45 +137,18 @@ class App extends React.Component{
                 }
             }
             else{
-                /*
-                 * Se o valor for subtração,
-                 * verifica se existe valor numérico imediatamente a direita do operador.
-                 */
                 if(valores[posicao + 1] !== undefined){
-                    /*
-                     * Se existir executa o cálculo de subtração entre os valores numéricos:
-                     * imediatamente a esquerda do operador e imediatamente a direita do operador.
-                     * remove os dois valores numéricos,
-                     * remove o operador de subtração,
-                     * remove a preferência do operador de subtração.
-                     */
                     resultado = valores[posicao] - valores[posicao + 1];
                     valores.splice(posicao, 2, resultado);
                     operadores.splice(posicao, 1);
                     preferencia.splice(posicao, 1);
                 }
                 else{
-                    /*
-                    * Se não existir valor numérico imediatamente a direita do operador,
-                    * verifica se o número de valores numéricos é maior que 1.
-                    */
                     if(valores.length > 1){
-                        /*
-                        * Se o número de valores numéricos for maior que 1,
-                        * remove o último operador,
-                        * remove a preferência do último operador.
-                        */
                         operadores.pop();
                         preferencia.pop();
                     }
                     else{
-                        /*
-                        * Se o número de valores numéricos for igual a 1,
-                        * atribui o valor numérico ao resultado,
-                        * reseta o vetor de valores,
-                        * remove o último operador,
-                        * remove a preferência do último operador.
-                        */
                         resultado = valores[posicao];
                         valores = [];
                         operadores.pop();
@@ -309,45 +157,31 @@ class App extends React.Component{
                 }
             }
         }
-        // Atribui o resultado do cálculo ao visor de resultado da calculadora
         this.setState({resultado: resultado});
     };
-    // Reseta Todos os States Para o Padrão
-    resetar = () => {
-        this.setState({valor: ['','']});
-        this.setState({resultado: ''});
-        this.setState({operacao: ''});
-        this.setState({calculos: []});
-        this.setState({somar: [false]});
-        this.setState({subtrair: [false]});
-        this.setState({multiplicar: [false]});
-        this.setState({dividir: [false]});
-        this.setState({pontos: false});
-        this.setState({ponto: [0,0]});
-        this.setState({parenteses: false});
-        this.setState({parentese: [0]});
-    };
-    // Apagar o Último ou Todos os Valores Informados
+    // Apagar o Último ou Todos os Valores e Operações Informadas
     apagar = (e) => {
         e.preventDefault();
         if(e.target.value === 'C'){
-            // Se a opção de apagar tudo for solicitada, reseta todos os states para o padrão
-            this.resetar();
+            this.setState({valor: ['','']});
+            this.setState({resultado: ''});
+            this.setState({operacao: ''});
+            this.setState({calculos: []});
+            this.setState({somar: [false]});
+            this.setState({subtrair: [false]});
+            this.setState({multiplicar: [false]});
+            this.setState({dividir: [false]});
+            this.setState({pontos: false});
+            this.setState({ponto: [0,0]});
+            this.setState({parenteses: false});
+            this.setState({parentese: [0]});
         }
-        else if(e.target.value === 'CE'){
+        else{
+            console.log(this.state.operacao);
+            console.log(this.state.calculos);
+            console.log(this.state.valor);
             if(this.state.operacao){
-                /*
-                * Se a opção de apagar o último valor for solicitada,
-                * verifica se existe algum valor informado.
-                */
                 if(this.state.operacao[this.state.operacao.length - 1] === '+'){
-                    /*
-                    * Se o último valor for a operação de soma,
-                    * remove a última operação de soma do vetor somar,
-                    * modifica o status da última operação de soma do vetor somar para false,
-                    * remove a última operação de soma da lista de operações,
-                    * remove a última operação de soma da lista de calculos.
-                    */
                     let somar = this.state.somar;
                     somar.pop();
                     somar[somar.length - 1] = false;
@@ -356,13 +190,6 @@ class App extends React.Component{
                     this.setState((state) => ({calculos: state.calculos.slice(0, -1)}));
                 }
                 else if(this.state.operacao[this.state.operacao.length - 1] === '-'){
-                    /*
-                    * Se o último valor for a operação de subtração,
-                    * remove a última operação de subtração do vetor subtrair,
-                    * modifica o status da última operação de subtração do vetor subtrair para false,
-                    * remove a última operação de subtração da lista de operações,
-                    * remove a última operação de subtração da lista de calculos.
-                    */
                     let subtrair = this.state.subtrair;
                     subtrair.pop();
                     subtrair[subtrair.length - 1] = false;
@@ -371,13 +198,6 @@ class App extends React.Component{
                     this.setState((state) => ({calculos: state.calculos.slice(0, -1)}));
                 }
                 else if(this.state.operacao[this.state.operacao.length - 1] === '*'){
-                    /*
-                    * Se o último valor for a operação de multiplicação,
-                    * remove a última operação de multiplicação do vetor multiplicar,
-                    * modifica o status da última operação de multiplicação do vetor multiplicar para false,
-                    * remove a última operação de multiplicação da lista de operações,
-                    * remove a última operação de multiplicação da lista de calculos.
-                    */
                     let multiplicar = this.state.multiplicar;
                     multiplicar.pop();
                     multiplicar[multiplicar.length - 1] = false;
@@ -386,13 +206,6 @@ class App extends React.Component{
                     this.setState((state) => ({calculos: state.calculos.slice(0, -1)}));
                 }
                 else if(this.state.operacao[this.state.operacao.length - 1] === '/'){
-                    /*
-                    * Se o último valor for a operação de divisão,
-                    * remove a última operação de divisão do vetor dividir,
-                    * modifica o status da última operação de divisão do vetor dividir para false,
-                    * remove a última operação de divisão da lista de operações,
-                    * remove a última operação de divisão da lista de calculos.
-                    */
                     let dividir = this.state.dividir;
                     dividir.pop();
                     dividir[dividir.length - 1] = false;
@@ -402,13 +215,6 @@ class App extends React.Component{
                 }
                 else if(this.state.operacao[this.state.operacao.length - 1] === '('){
                     if(this.state.parentese.length > 1){
-                        /*
-                        * Se o último valor for o abrir parêntese,
-                        * Se a quantidade de parênteses for maior que 1,
-                        * remove o último abrir parêntese do vetor parentese,
-                        * remove o último abrir parêntese da lista de operações,
-                        * remove a último abrir parêntese da lista de calculos.
-                        */
                         let parentese = this.state.parentese;
                         parentese.pop();
                         this.setState({parentese: parentese});
@@ -416,22 +222,12 @@ class App extends React.Component{
                         this.setState((state) => ({calculos: state.calculos.slice(0, -1)}));
                     }
                     else{
-                        /*
-                        * Se a quantidade de parênteses for igual a 1,
-                        * modifica o status dos parênteses para false,
-                        * modifica o status do último parêntese para 0,
-                        * remove o último abrir parêntese da lista de operações,
-                        * remove a último abrir parêntese da lista de calculos.
-                        */
                         this.setState({parenteses: false});
                         let parentese = this.state.parentese;
                         parentese[parentese.length - 1] = 0;
                         this.setState({parentese: parentese});
                         this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                         this.setState((state) => ({calculos: state.calculos.slice(0, -1)}));
-                        if(!this.state.operacao){
-                            this.resetar();
-                        }
                     }
                 }
                 else if(this.state.operacao[this.state.operacao.length - 1] === ')'){
@@ -454,17 +250,15 @@ class App extends React.Component{
                                     let calculos = this.state.calculos;
                                     calculos[calculos.length - 1] = parseFloat(valor[valor.length - 1]);
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                                 else{
                                     valor.pop();
                                     let calculos = this.state.calculos;
                                     calculos.pop();
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
+                                this.setState({valor: valor});
+                                this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                             }
                         }
                         else{
@@ -475,16 +269,14 @@ class App extends React.Component{
                                     let calculos = this.state.calculos;
                                     calculos[calculos.length - 1] = parseFloat(valor[valor.length - 1]);
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                                 else{
                                     let calculos = this.state.calculos;
                                     calculos.pop();
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
+                                this.setState({valor: valor});
+                                this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                             }
                             else{
                                 if(this.state.valor[this.state.valor.length - 2]){
@@ -494,16 +286,14 @@ class App extends React.Component{
                                         let calculos = this.state.calculos;
                                         calculos[calculos.length - 1] = parseFloat(valor[valor.length - 2]);
                                         this.setState({calculos: calculos});
-                                        this.setState({valor: valor});
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                     }
                                     else{
                                         let calculos = this.state.calculos;
                                         calculos.pop();
                                         this.setState({calculos: calculos});
-                                        this.setState({valor: valor});
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                     }
+                                    this.setState({valor: valor});
+                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                             }
                         }
@@ -521,17 +311,15 @@ class App extends React.Component{
                                     let calculos = this.state.calculos;
                                     calculos[calculos.length - 1] = parseInt(valor[valor.length - 1]);
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                                 else{
                                     valor.pop();
                                     let calculos = this.state.calculos;
                                     calculos.pop();
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
+                                this.setState({valor: valor});
+                                this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                             }
                         }
                         else{
@@ -542,16 +330,14 @@ class App extends React.Component{
                                     let calculos = this.state.calculos;
                                     calculos[calculos.length - 1] = parseInt(valor[valor.length - 1]);
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                                 else{
                                     let calculos = this.state.calculos;
                                     calculos.pop();
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
+                                this.setState({valor: valor});
+                                this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                             }
                             else{
                                 if(this.state.valor[this.state.valor.length - 2]){
@@ -561,16 +347,14 @@ class App extends React.Component{
                                         let calculos = this.state.calculos;
                                         calculos[calculos.length - 1] = parseInt(valor[valor.length - 2]);
                                         this.setState({calculos: calculos});
-                                        this.setState({valor: valor});
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                     }
                                     else{
                                         let calculos = this.state.calculos;
                                         calculos.pop();
                                         this.setState({calculos: calculos});
-                                        this.setState({valor: valor});
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                     }
+                                    this.setState({valor: valor});
+                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                             }
                         }
@@ -582,116 +366,54 @@ class App extends React.Component{
                             if(this.state.valor[this.state.valor.length - 1]){
                                 let valor = this.state.valor;
                                 valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                if(valor[valor.length - 1] && (valor[valor.length - 1] !== '-')){
+                                if(valor[valor.length - 1]){
                                     let calculos = this.state.calculos;
                                     calculos[calculos.length - 1] = parseFloat(valor[valor.length - 1]);
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                                 else{
-                                    if(valor.length > 2){
-                                        if(valor[valor.length - 1] === '-'){
-                                            this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                        }
-                                        valor.pop();
-                                    }
-                                    else if(valor[valor.length - 1] === '-'){
-                                        valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                    }
+                                    valor.pop();
                                     let calculos = this.state.calculos;
                                     calculos.pop();
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
-                            }
-                            else{
-                                let valor = this.state.valor;
-                                valor.pop();
-                                valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                if(valor[valor.length - 1] && (valor[valor.length - 1] !== '-')){
-                                    let calculos = this.state.calculos;
-                                    calculos[calculos.length - 1] = parseFloat(valor[valor.length - 1]);
-                                    this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                }
-                                else{
-                                    if(valor.length > 2){
-                                        if(valor[valor.length - 1] === '-'){
-                                            this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                        }
-                                        valor.pop();
-                                    }
-                                    else if(valor[valor.length - 1] === '-'){
-                                        valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                    }
-                                    let calculos = this.state.calculos;
-                                    calculos.pop();
-                                    this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                }
+                                this.setState({valor: valor});
+                                this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                             }
                         }
                         else{
                             if(this.state.valor[this.state.valor.length - 1]){
                                 let valor = this.state.valor;
                                 valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                if(valor[valor.length - 1] && (valor[valor.length - 1] !== '-')){
+                                if(valor[valor.length - 1]){
                                     let calculos = this.state.calculos;
                                     calculos[calculos.length - 1] = parseFloat(valor[valor.length - 1]);
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                                 else{
-                                    if(valor.length > 2){
-                                        if(valor[valor.length - 1] === '-'){
-                                            this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                        }
-                                        valor.pop();
-                                    }
-                                    else if(valor[valor.length - 1] === '-'){
-                                        valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                    }
                                     let calculos = this.state.calculos;
                                     calculos.pop();
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
+                                this.setState({valor: valor});
+                                this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                             }
                             else{
                                 if(this.state.valor[this.state.valor.length - 2]){
                                     let valor = this.state.valor;
                                     valor[valor.length - 2] = valor[valor.length - 2].slice(0, -1);
-                                    if(valor[valor.length - 2] && (valor[valor.length - 2] !== '-')){
+                                    if(valor[valor.length - 2]){
                                         let calculos = this.state.calculos;
                                         calculos[calculos.length - 1] = parseFloat(valor[valor.length - 2]);
                                         this.setState({calculos: calculos});
-                                        this.setState({valor: valor});
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                     }
                                     else{
-                                        if(valor[valor.length - 2] === '-'){
-                                            valor[valor.length - 2] = valor[valor.length - 2].slice(0, -1);
-                                            this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                        }
                                         let calculos = this.state.calculos;
                                         calculos.pop();
                                         this.setState({calculos: calculos});
-                                        this.setState({valor: valor});
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                     }
-                                    if(!this.state.operacao){
-                                        // Se a opção de apagar tudo for solicitada, reseta os valores dos states para o padrão
-                                        this.resetar();
-                                    }
+                                    this.setState({valor: valor});
+                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                             }
                         }
@@ -701,116 +423,54 @@ class App extends React.Component{
                             if(this.state.valor[this.state.valor.length - 1]){
                                 let valor = this.state.valor;
                                 valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                if(valor[valor.length - 1] && (valor[valor.length - 1] !== '-')){
+                                if(valor[valor.length - 1]){
                                     let calculos = this.state.calculos;
                                     calculos[calculos.length - 1] = parseInt(valor[valor.length - 1]);
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                                 else{
-                                    if(valor.length > 2){
-                                        if(valor[valor.length - 1] === '-'){
-                                            this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                        }
-                                        valor.pop();
-                                    }
-                                    else if(valor[valor.length - 1] === '-'){
-                                        valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                    }
+                                    valor.pop();
                                     let calculos = this.state.calculos;
                                     calculos.pop();
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
-                            }
-                            else{
-                                let valor = this.state.valor;
-                                valor.pop();
-                                valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                if(valor[valor.length - 1] && (valor[valor.length - 1] !== '-')){
-                                    let calculos = this.state.calculos;
-                                    calculos[calculos.length - 1] = parseInt(valor[valor.length - 1]);
-                                    this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                }
-                                else{
-                                    if(valor.length > 2){
-                                        if(valor[valor.length - 1] === '-'){
-                                            this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                        }
-                                        valor.pop();
-                                    }
-                                    else if(valor[valor.length - 1] === '-'){
-                                        valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                    }
-                                    let calculos = this.state.calculos;
-                                    calculos.pop();
-                                    this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                }
+                                this.setState({valor: valor});
+                                this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                             }
                         }
                         else{
                             if(this.state.valor[this.state.valor.length - 1]){
                                 let valor = this.state.valor;
                                 valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                if(valor[valor.length - 1] && (valor[valor.length - 1] !== '-')){
+                                if(valor[valor.length - 1]){
                                     let calculos = this.state.calculos;
                                     calculos[calculos.length - 1] = parseInt(valor[valor.length - 1]);
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                                 else{
-                                    if(valor.length > 2){
-                                        if(valor[valor.length - 1] === '-'){
-                                            this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                        }
-                                        valor.pop();
-                                    }
-                                    else if(valor[valor.length - 1] === '-'){
-                                        valor[valor.length - 1] = valor[valor.length - 1].slice(0, -1);
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                    }
                                     let calculos = this.state.calculos;
                                     calculos.pop();
                                     this.setState({calculos: calculos});
-                                    this.setState({valor: valor});
-                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
+                                this.setState({valor: valor});
+                                this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                             }
                             else{
                                 if(this.state.valor[this.state.valor.length - 2]){
                                     let valor = this.state.valor;
                                     valor[valor.length - 2] = valor[valor.length - 2].slice(0, -1);
-                                    if(valor[valor.length - 2] && (valor[valor.length - 2] !== '-')){
+                                    if(valor[valor.length - 2]){
                                         let calculos = this.state.calculos;
                                         calculos[calculos.length - 1] = parseInt(valor[valor.length - 2]);
                                         this.setState({calculos: calculos});
-                                        this.setState({valor: valor});
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                     }
                                     else{
-                                        if(valor[valor.length - 2] === '-'){
-                                            valor[valor.length - 2] = valor[valor.length - 2].slice(0, -1);
-                                            this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
-                                        }
                                         let calculos = this.state.calculos;
                                         calculos.pop();
                                         this.setState({calculos: calculos});
-                                        this.setState({valor: valor});
-                                        this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                     }
-                                    if(!this.state.operacao){
-                                        // Se a opção de apagar tudo for solicitada, reseta os valores dos states para o padrão
-                                        this.resetar();
-                                    }
+                                    this.setState({valor: valor});
+                                    this.setState((state) => ({operacao: state.operacao.slice(0, -1)}));
                                 }
                             }
                         }
@@ -818,8 +478,18 @@ class App extends React.Component{
                 }
             }
             else{
-                // Se a opção de apagar tudo for solicitada, reseta os valores dos states para o padrão
-                this.resetar();
+                this.setState({valor: ['','']});
+                this.setState({resultado: ''});
+                this.setState({operacao: ''});
+                this.setState({calculos: []});
+                this.setState({somar: [false]});
+                this.setState({subtrair: [false]});
+                this.setState({multiplicar: [false]});
+                this.setState({dividir: [false]});
+                this.setState({pontos: false});
+                this.setState({ponto: [0,0]});
+                this.setState({parenteses: false});
+                this.setState({parentese: [0]});
             }
         }
         this.calcular();
@@ -878,42 +548,6 @@ class App extends React.Component{
                         this.calcular();
                     }
                 }
-            }
-        }
-    };
-    // Muda o Sinal do Último Valor Informado
-    sinal = (e) => {
-        e.preventDefault();
-        const numero = (numero) => {
-            return !isNaN(parseFloat(numero)) && isFinite(numero);
-        };
-        if(numero(this.state.calculos[this.state.calculos.length - 1])){
-            if(this.state.valor[this.state.valor.length - 1]){
-                let calculos = this.state.calculos;
-                calculos[calculos.length - 1] = calculos[calculos.length - 1] * -1;
-                let valor = this.state.valor;
-                valor[valor.length - 1] = (calculos[calculos.length - 1]).toString();
-                this.setState({valor: valor});
-                this.setState({calculos: calculos});
-                let operacao = '';
-                calculos.forEach(item => {
-                    operacao = operacao + (item).toString();
-                });
-                this.setState({operacao: operacao});
-                this.calcular();
-            }
-            else if(this.state.valor[this.state.valor.length - 2]){
-                let calculos = this.state.calculos;
-                calculos[calculos.length - 1] = calculos[calculos.length - 1] * -1;
-                let valor = this.state.valor;
-                valor[valor.length - 2] = (calculos[calculos.length - 1]).toString();
-                this.setState({calculos: calculos});
-                let operacao = '';
-                calculos.forEach(item => {
-                    operacao = operacao + (item).toString();
-                });
-                this.setState({operacao: operacao});
-                this.calcular();
             }
         }
     };
@@ -1231,7 +865,30 @@ class App extends React.Component{
                     if(!this.state.somar[this.state.somar.length - 1] && !this.state.subtrair[this.state.subtrair.length - 1] && !this.state.multiplicar[this.state.multiplicar.length - 1] && !this.state.dividir[this.state.dividir.length - 1] && !(this.state.ponto[this.state.ponto.length - 2] === 1)){
                         this.operacoes(e);
                     }
+                    // Executa se a operação de soma ou subtração ou multiplicação ou divisão tiver sido solicitada
+                    else if(this.state.somar[this.state.somar.length - 1] || this.state.subtrair[this.state.subtrair.length - 1] || this.state.multiplicar[this.state.multiplicar.length - 1] || this.state.dividir[this.state.dividir.length - 1]){
+                        // Executa se o sinal negativo '-' ou positivo '+' tiver sido solicitado
+                        if((e.target.value === '-') || (e.target.value === '+')){
+                            // Adiciona o sinal negativo '-' ou positivo '+' a operação exibida e ao valorB
+                            let valor = this.state.valor;
+                            valor[valor.length - 1] = valor[valor.length - 1] + e.target.value;
+                            this.setState({valor: valor});
+                            this.setState((state) => ({operacao: state.operacao.concat(e.target.value)}));
+                        }
+                    }
                 }
+            }
+            /*
+                Executa se todas as condições forem satisfeitas:
+                se o valorA for diferente de '-', '+'
+                se o sinal negativo '-' ou positivo '+' tiver sido solicitado
+            */
+            else if(!this.state.valor[this.state.valor.length - 2] && ((e.target.value === '-') || (e.target.value === '+'))){
+                // Adiciona o sinal negativo '-' ou positivo '+' a operação exibida e ao valorA
+                let valor = this.state.valor;
+                valor[valor.length - 2] = valor[valor.length - 2] + e.target.value;
+                this.setState({valor: valor});
+                this.setState((state) => ({operacao: state.operacao.concat(e.target.value)}));
             }
         }
         else{
@@ -1302,7 +959,30 @@ class App extends React.Component{
                     if(!this.state.somar[this.state.somar.length - 1] && !this.state.subtrair[this.state.subtrair.length - 1] && !this.state.multiplicar[this.state.multiplicar.length - 1] && !this.state.dividir[this.state.dividir.length - 1]){
                         this.operacoes(e);
                     }
+                    // Executa se a operação de soma ou subtração ou multiplicação ou divisão tiver sido solicitada
+                    else if(this.state.somar[this.state.somar.length - 1] || this.state.subtrair[this.state.subtrair.length - 1] || this.state.multiplicar[this.state.multiplicar.length - 1] || this.state.dividir[this.state.dividir.length - 1]){
+                        // Executa se o sinal negativo '-' ou positivo '+' tiver sido solicitado
+                        if((e.target.value === '-') || (e.target.value === '+')){
+                            // Adiciona o sinal negativo '-' ou positivo '+' a operação exibida e ao valorB
+                            let valor = this.state.valor;
+                            valor[valor.length - 1] = valor[valor.length - 1] + e.target.value;
+                            this.setState({valor: valor});
+                            this.setState((state) => ({operacao: state.operacao.concat(e.target.value)}));
+                        }
+                    }
                 }
+            }
+            /*
+                Executa se todas as condições forem satisfeitas:
+                se o valorA for diferente de '-', '+'
+                se o sinal negativo '-' ou positivo '+' tiver sido solicitado
+            */
+            else if(!this.state.valor[this.state.valor.length - 2] && ((e.target.value === '-') || (e.target.value === '+'))){
+                // Adiciona o sinal negativo '-' ou positivo '+' a operação exibida e ao valorA
+                let valor = this.state.valor;
+                valor[valor.length - 2] = valor[valor.length - 2] + e.target.value;
+                this.setState({valor: valor});
+                this.setState((state) => ({operacao: state.operacao.concat(e.target.value)}));
             }
         }
     };
@@ -1331,9 +1011,8 @@ class App extends React.Component{
                         <input type='button' value='-' className='formulario-button' onClick={this.operadores}/>
                         <input type='button' value='0' className='formulario-button' onClick={this.valores}/>
                         <input type='button' value='.' className='formulario-button' onClick={this.ponto}/>
-                        <input type='button' value='+/-' className='formulario-button' onClick={this.sinal}/>
-                        <input type='button' value='+' className='formulario-button' onClick={this.operadores}/>
                         <input type='button' value='=' className='formulario-button' onClick={this.operadores}/>
+                        <input type='button' value='+' className='formulario-button' onClick={this.operadores}/>
                     </form>
                 </div>
             </div>
