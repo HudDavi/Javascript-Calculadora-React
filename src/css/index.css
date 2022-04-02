@@ -34,7 +34,7 @@ body{
 .formulario-operacao{
     background: #fff;
     border: 1px solid #000;
-    font-size: 20px;
+    font-size: 100%;
     font-weight: bold;
     min-height: 50px;
     min-width: 100%;
@@ -64,6 +64,7 @@ body{
     border: 1px solid #fff;
     display: block;
     cursor: pointer;
+    font-size: 12px;
     font-weight: bold;
     height: 50px;
     width: 25%;
@@ -82,12 +83,12 @@ body{
 
 @media (min-width: 0) and (max-width: 500px) {
     .formulario{
-        width: 90%;
+        width: 95%;
     }
 }
 
 @media (min-width: 501px){
     .formulario{
-        width: 400px;
+        width: 450px;
     }
 }
